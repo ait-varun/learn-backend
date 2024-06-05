@@ -8,7 +8,7 @@ npm i express
 
 Check out the [Express documentation](https://expressjs.com/) for more details.
 
-# Install Nodemon
+# Install Nodemon (optional)
 
 ```bash
 npm i -g nodemon
