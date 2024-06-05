@@ -9,12 +9,33 @@ import fs from "fs";
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(express.json());
+
 // Read and parse JSON data from a file
 const users = JSON.parse(fs.readFileSync("./users.json"));
 
 // Define route to handle root endpoint
 app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+
+// Middleware to log requests console.log after each request
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
+app.use((req, res, next) => {
+  fs.appendFile(
+    "log.txt",
+    `\nDate :${Date.now()}, IP: ${req.ip}, Method: ${req.method}, URL: ${
+      req.url
+    }`,
+    (err) => {
+      if (err) throw err;
+      next();
+    }
+  );
 });
 
 // Define route to get all users
@@ -29,7 +50,7 @@ app.get("/api/users/:id", (req, res) => {
   res.json(user);
 });
 
-app.use(express.json());
+
 
 // Create new user
 app.post("/api/users", (req, res) => {
