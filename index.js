@@ -4,6 +4,7 @@ process.loadEnvFile();
 // Import required modules
 import express from "express";
 import { readFileSync } from "fs";
+import fs from "fs";
 
 // Create an Express application
 const app = express();
@@ -27,6 +28,21 @@ app.get("/api/users/:id", (req, res) => {
   const id = Number(req.params.id);
   const user = users.find((user) => user.id === id);
   res.json(user);
+});
+
+app.use(express.json());
+
+// Create new user
+app.post("/api/users", (req, res) => {
+  const newUser = req.body;
+  users.push({ id: users.length + 1, ...newUser });
+  fs.writeFile("./users.json", JSON.stringify(users), (err) => {
+    if (err) throw err;
+    res.json({
+      status: "success",
+      message: `User ${newUser.first_name} added successfully`,
+    });
+  });
 });
 
 // Start the server and listen on the specified port
