@@ -1,6 +1,7 @@
+Use the package manager [npm](https://www.npmjs.com/) to install express and other packages.
+
 # Install Express
 
-Use the package manager [npm](https://www.npmjs.com/) to install express and other packages.
 
 ```bash
 npm i express
