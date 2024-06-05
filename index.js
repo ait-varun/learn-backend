@@ -3,7 +3,6 @@ process.loadEnvFile();
 
 // Import required modules
 import express from "express";
-import { readFileSync } from "fs";
 import fs from "fs";
 
 // Create an Express application
@@ -11,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Read and parse JSON data from a file
-const users = JSON.parse(readFileSync("./users.json"));
+const users = JSON.parse(fs.readFileSync("./users.json"));
 
 // Define route to handle root endpoint
 app.get("/", (req, res) => {
