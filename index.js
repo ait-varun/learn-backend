@@ -1,13 +1,16 @@
-const express = require("express");
+process.loadEnvFile();
+import express from "express";
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
+
+console.log("PORT", process.env.PORT);
 
 app.get("/", (req, res) => {
   res.send("Home");
 });
 
 app.get("/about", (req, res) => {
-  res.send("about");
+  res.send(`name ${process.env.USER_NAME}`);
 });
 
 app.post("/post", (req, res) => {
