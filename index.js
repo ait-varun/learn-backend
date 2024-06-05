@@ -1,29 +1,23 @@
 process.loadEnvFile();
 import express from "express";
+import { readFileSync } from "fs";
+
 const app = express();
 const port = process.env.PORT || 3000;
 
-console.log("PORT", process.env.PORT);
+// parse json data
+const users = JSON.parse(readFileSync("./users.json"));
 
 app.get("/", (req, res) => {
-  res.send("Home");
+  res.send("Hello World!");
 });
 
-app.get("/about", (req, res) => {
-  res.send(`name ${process.env.USER_NAME}`);
+// make api calls sending json data
+
+app.get("/users", (req, res) => {
+  res.json(users);
 });
 
-app.post("/post", (req, res) => {
-  res.send("Got a POST request");
-});
-
-app.put("/user", (req, res) => {
-  res.send("Got a PUT request at /user");
-});
-
-app.delete("/user", (req, res) => {
-  res.send("Got a DELETE request at /user");
-});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
