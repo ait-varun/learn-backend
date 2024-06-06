@@ -1,2 +1,5 @@
 
 Date :1717649104621, IP: ::1, Method: GET, URL: /api/users
+Date :1717649284070, IP: ::1, Method: POST, URL: /api/users
+Date :1717649351730, IP: ::1, Method: POST, URL: /api/users
+Date :1717649358329, IP: ::1, Method: GET, URL: /api/users
