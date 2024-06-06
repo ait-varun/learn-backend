@@ -17,6 +17,17 @@
 // Load environment variables from a file
 process.loadEnvFile();
 
+// Supabase
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+
+
+
 // Import required modules
 import express from "express"; // Express.js for creating the web server
 import fs from "fs/promises"; // File system module for reading and writing files (with promises)
@@ -34,16 +45,7 @@ app.use(express.json());
 
 
 
-/**
- * !Read and parse user data from the users.json file
- */
-let users = [];
-try {
-  const usersData = await fs.readFile("./users.json", "utf8");
-  users = JSON.parse(usersData);
-} catch (err) {
-  console.error("Error reading users.json:", err);
-}
+
 
 // Define route to handle root endpoint
 app.get("/", (req, res) => {
@@ -85,9 +87,20 @@ app.use(async (req, res, next) => {
 /**
  * !Define route to get all users
  */
-app.get("/api/users", (req, res) => {
-  res.json(users);
+app.get('/api/users', async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('users').select('*');
+    if (error) {
+      console.error('Error fetching users:', error);
+      return res.status(500).json({ error: 'Failed to fetch users' });
+    }
+    res.json(data);
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
 });
+
 
 
 
@@ -95,21 +108,33 @@ app.get("/api/users", (req, res) => {
  * !Define route to get a specific user by ID
  */
 
-app.get("/api/users/:id", (req, res) => {
-  const id = Number(req.params.id); // Convert the ID parameter to a number
-  const user = users.find((user) => user.id === id); // Find the user with the specified ID
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
+app.get('/api/users/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error('Error fetching user:', error);
+    return res.status(500).json({ error: 'Failed to fetch user' });
   }
-  res.json(user); // Send the user data as JSON response
+
+  if (!data) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  res.json(data);
 });
+
 
 /**
  * !Define route to create a new user
  */
 
-app.post("/api/users", async (req, res) => {
-  const newUser = req.body; // Get the new user data from the request body
+app.post('/api/users', async (req, res) => {
+  const newUser = req.body;
 
   // Validate user input
   const { error } = validateUser(newUser);
@@ -118,29 +143,44 @@ app.post("/api/users", async (req, res) => {
   }
 
   // Check if user already exists
-  const existingUser = users.find((user) => user.email === newUser.email);
-  if (existingUser) {
+  const { data: existingUsers, error: existingError } = await supabase
+    .from('users')
+    .select('*')
+    .eq('email', newUser.email);
+
+  if (existingError) {
+    console.error('Error checking existing users:', existingError);
+    return res.status(500).json({ error: 'Failed to check existing users' });
+  }
+
+  if (existingUsers.length > 0) {
     return res
       .status(400)
       .json({ error: `User with email ${newUser.email} already exists` });
   }
 
-  // Add the new user to the users array
-
-  const id = users.length + 1;
-  users.push({ id, ...newUser }); // Add the new user to the users array with a new ID
-
-  try {
-    await fs.writeFile("./users.json", JSON.stringify(users));
-    res.json({
-      status: "success",
-      message: `User ${newUser.first_name} added successfully`,
+  // Insert the new user into the Supabase table
+  const { data, error: insertError } = await supabase
+    .from('users')
+    .insert({
+      id: 134234,
+      first_name: newUser.first_name,
+      last_name: newUser.last_name,
+      email: newUser.email,
+      gender: newUser.gender,
     });
-  } catch (err) {
-    console.error("Error writing to users.json:", err);
-    res.status(500).json({ error: "Failed to save user" });
+
+  if (insertError) {
+    console.error('Error inserting user:', insertError);
+    return res.status(500).json({ error: 'Failed to save user' });
   }
+
+  res.json({
+    status: 'success',
+    message: `User ${newUser.first_name} added successfully`,
+  });
 });
+
 
 // Start the server and listen for incoming requests on the specified port
 app.listen(port, () => {
