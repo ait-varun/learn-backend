@@ -27,10 +27,16 @@ const app = express();
 // Set the port number to either the value of the PORT environment variable or 3000 if not set
 const port = process.env.PORT || 3000;
 
-// Middleware to parse JSON request bodies
+/**
+ * !Middleware to parse JSON request bodies
+ */
 app.use(express.json());
 
-// Read and parse user data from the users.json file
+
+
+/**
+ * !Read and parse user data from the users.json file
+ */
 let users = [];
 try {
   const usersData = await fs.readFile("./users.json", "utf8");
@@ -44,13 +50,21 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// Middleware to log requests to the console after each request
+
+/**
+ * !Middleware to log requests to the console after each request
+ */
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
 
-// Middleware to log request details to a log file
+
+
+/**
+ * !Middleware to log request details to a log file
+ */
+
 app.use(async (req, res, next) => {
   try {
     await fs.appendFile(
@@ -66,12 +80,21 @@ app.use(async (req, res, next) => {
   }
 });
 
-// Define route to get all users
+
+
+/**
+ * !Define route to get all users
+ */
 app.get("/api/users", (req, res) => {
   res.json(users);
 });
 
-// Define route to get a specific user by ID
+
+
+/**
+ * !Define route to get a specific user by ID
+ */
+
 app.get("/api/users/:id", (req, res) => {
   const id = Number(req.params.id); // Convert the ID parameter to a number
   const user = users.find((user) => user.id === id); // Find the user with the specified ID
@@ -81,7 +104,10 @@ app.get("/api/users/:id", (req, res) => {
   res.json(user); // Send the user data as JSON response
 });
 
-// Define route to create a new user
+/**
+ * !Define route to create a new user
+ */
+
 app.post("/api/users", async (req, res) => {
   const newUser = req.body; // Get the new user data from the request body
 
