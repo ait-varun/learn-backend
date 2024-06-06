@@ -36,3 +36,11 @@ Date :1717657506787, IP: ::1, Method: GET, URL: /api/users
 Date :1717657516238, IP: ::1, Method: POST, URL: /api/users
 Date :1717657517418, IP: ::1, Method: POST, URL: /api/users
 Date :1717657550739, IP: ::1, Method: POST, URL: /api/users
+Date :1717666590979, IP: ::1, Method: GET, URL: /api/users
+Date :1717666660461, IP: ::1, Method: POST, URL: /api/users
+Date :1717666668887, IP: ::1, Method: GET, URL: /api/users
+Date :1717666677018, IP: ::1, Method: DELETE, URL: /api/users/11
+Date :1717666679099, IP: ::1, Method: DELETE, URL: /api/users/11
+Date :1717666682742, IP: ::1, Method: GET, URL: /api/users
+Date :1717666697152, IP: ::1, Method: POST, URL: /api/users
+Date :1717666704605, IP: ::1, Method: DELETE, URL: /api/users/11

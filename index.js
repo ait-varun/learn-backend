@@ -10,6 +10,7 @@
  * - GET /api/users: Responds with the list of all users.
  * - GET /api/users/:id: Responds with the details of a specific user by ID.
  * - POST /api/users: Creates a new user and adds it to the users.json file.
+ * - DELETE /api/users/:id: Deletes a user by ID from the users.json file.
  *
  * The application starts the server and listens for incoming requests on the specified port.
  */
@@ -139,6 +140,33 @@ app.post("/api/users", async (req, res) => {
   } catch (err) {
     console.error("Error writing to users.json:", err);
     res.status(500).json({ error: "Failed to save user" });
+  }
+});
+
+
+/**
+ * !Define route to delete a user by ID
+ */
+app.delete("/api/users/:id", async (req, res) => {
+  const id = Number(req.params.id); // Convert the ID parameter to a number
+  const userIndex = users.findIndex((user) => user.id === id); // Find the index of the user with the specified ID
+
+  if (userIndex === -1) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  // Remove the user from the users array
+  const deletedUser = users.splice(userIndex, 1)[0];
+
+  try {
+    await fs.writeFile("./users.json", JSON.stringify(users));
+    res.json({
+      status: "success",
+      message: `User ${deletedUser.first_name} deleted successfully`,
+    });
+  } catch (err) {
+    console.error("Error writing to users.json:", err);
+    res.status(500).json({ error: "Failed to delete user" });
   }
 });
 
