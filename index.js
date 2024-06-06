@@ -122,8 +122,10 @@ app.post("/api/users", async (req, res) => {
   if (existingUser) {
     return res
       .status(400)
-      .json({ error: "User with this email already exists" });
+      .json({ error: `User with email ${newUser.email} already exists` });
   }
+
+  // Add the new user to the users array
 
   const id = users.length + 1;
   users.push({ id, ...newUser }); // Add the new user to the users array with a new ID
