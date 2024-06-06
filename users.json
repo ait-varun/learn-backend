@@ -68,5 +68,12 @@
     "last_name": "Mc Trusty",
     "email": "rmctrusty9@a8.net",
     "gender": "Male"
+  },
+  {
+    "id": 11,
+    "first_name": "Sam",
+    "last_name": "Bahadur",
+    "email": "samBahadur@yelp.net",
+    "gender": "Male"
   }
 ]
