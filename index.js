@@ -19,7 +19,8 @@ process.loadEnvFile();
 
 // Import required modules
 import express from "express"; // Express.js for creating the web server
-import fs from "fs"; // File system module for reading and writing files
+import fs from "fs/promises"; // File system module for reading and writing files (with promises)
+import { validateUser } from "./validation.js"; // Import user validation function
 
 // Create an instance of the Express.js application
 const app = express();
@@ -30,7 +31,13 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 // Read and parse user data from the users.json file
-const users = JSON.parse(fs.readFileSync("./users.json"));
+let users = [];
+try {
+  const usersData = await fs.readFile("./users.json", "utf8");
+  users = JSON.parse(usersData);
+} catch (err) {
+  console.error("Error reading users.json:", err);
+}
 
 // Define route to handle root endpoint
 app.get("/", (req, res) => {
@@ -44,17 +51,19 @@ app.use((req, res, next) => {
 });
 
 // Middleware to log request details to a log file
-app.use((req, res, next) => {
-  fs.appendFile(
-    "log.txt",
-    `\nDate :${Date.now()}, IP: ${req.ip}, Method: ${req.method}, URL: ${
-      req.url
-    }`,
-    (err) => {
-      if (err) throw err;
-      next();
-    }
-  );
+app.use(async (req, res, next) => {
+  try {
+    await fs.appendFile(
+      "log.txt",
+      `\nDate :${Date.now()}, IP: ${req.ip}, Method: ${req.method}, URL: ${
+        req.url
+      }`
+    );
+    next();
+  } catch (err) {
+    console.error("Error writing to log file:", err);
+    next(err);
+  }
 });
 
 // Define route to get all users
@@ -66,20 +75,35 @@ app.get("/api/users", (req, res) => {
 app.get("/api/users/:id", (req, res) => {
   const id = Number(req.params.id); // Convert the ID parameter to a number
   const user = users.find((user) => user.id === id); // Find the user with the specified ID
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
   res.json(user); // Send the user data as JSON response
 });
 
 // Define route to create a new user
-app.post("/api/users", (req, res) => {
+app.post("/api/users", async (req, res) => {
   const newUser = req.body; // Get the new user data from the request body
-  users.push({ id: users.length + 1, ...newUser }); // Add the new user to the users array with a new ID
-  fs.writeFile("./users.json", JSON.stringify(users), (err) => {
-    if (err) throw err;
+
+  // Validate user input
+  const { error } = validateUser(newUser);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
+  const id = users.length + 1;
+  users.push({ id, ...newUser }); // Add the new user to the users array with a new ID
+
+  try {
+    await fs.writeFile("./users.json", JSON.stringify(users));
     res.json({
       status: "success",
       message: `User ${newUser.first_name} added successfully`,
     });
-  });
+  } catch (err) {
+    console.error("Error writing to users.json:", err);
+    res.status(500).json({ error: "Failed to save user" });
+  }
 });
 
 // Start the server and listen for incoming requests on the specified port
