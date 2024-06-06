@@ -133,7 +133,7 @@ app.get('/api/users/:id', async (req, res) => {
  * !Define route to create a new user
  */
 
-app.post('/api/users', async (req, res) => {
+app.post("/api/users", async (req, res) => {
   const newUser = req.body;
 
   // Validate user input
@@ -144,13 +144,13 @@ app.post('/api/users', async (req, res) => {
 
   // Check if user already exists
   const { data: existingUsers, error: existingError } = await supabase
-    .from('users')
-    .select('*')
-    .eq('email', newUser.email);
+    .from("users")
+    .select("*")
+    .eq("email", newUser.email);
 
   if (existingError) {
-    console.error('Error checking existing users:', existingError);
-    return res.status(500).json({ error: 'Failed to check existing users' });
+    console.error("Error checking existing users:", existingError);
+    return res.status(500).json({ error: "Failed to check existing users" });
   }
 
   if (existingUsers.length > 0) {
@@ -159,30 +159,32 @@ app.post('/api/users', async (req, res) => {
       .json({ error: `User with email ${newUser.email} already exists` });
   }
 
+  const { data: allUsers, error: allError } = await supabase
+    .from("users")
+    .select("*");
+  const newId = allUsers.length + 1;
+
   // Insert the new user into the Supabase table
-  const { data, error: insertError } = await supabase
-    .from('users')
-    .insert({
-      id: 134234,
-      first_name: newUser.first_name,
-      last_name: newUser.last_name,
-      email: newUser.email,
-      gender: newUser.gender,
-    });
+  const { data, error: insertError } = await supabase.from("users").insert({
+    id: newId,
+    first_name: newUser.first_name,
+    last_name: newUser.last_name,
+    email: newUser.email,
+    gender: newUser.gender,
+  });
 
   if (insertError) {
-    console.error('Error inserting user:', insertError);
-    return res.status(500).json({ error: 'Failed to save user' });
+    console.error("Error inserting user:", insertError);
+    return res.status(500).json({ error: "Failed to save user" });
   }
 
   res.json({
-    status: 'success',
+    status: "success",
     message: `User ${newUser.first_name} added successfully`,
   });
 });
 
-
 // Start the server and listen for incoming requests on the specified port
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });
