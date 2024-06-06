@@ -219,7 +219,10 @@ app.delete('/api/users/:id', async (req, res) => {
     return res.status(500).json({ error: 'Failed to delete user' });
   }
 
-  res.json({ status: 'success', message: 'User deleted successfully' });
+  res.json({
+    status: "success",
+    message: `User named ${existingUser.first_name} deleted successfully`,
+  });
 });
 
 // Start the server and listen for incoming requests on the specified port

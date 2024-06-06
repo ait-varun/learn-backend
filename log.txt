@@ -121,3 +121,8 @@ Date :1717665798995, IP: ::1, Method: GET, URL: /api/users/123
 Date :1717665821963, IP: ::1, Method: GET, URL: /api/users/123
 Date :1717665843082, IP: ::1, Method: GET, URL: /api/users/123
 Date :1717665846715, IP: ::1, Method: GET, URL: /api/users/1
+Date :1717665878386, IP: ::1, Method: DELETE, URL: /api/users/11
+Date :1717665883933, IP: ::1, Method: POST, URL: /api/users
+Date :1717665888414, IP: ::1, Method: DELETE, URL: /api/users/11
+Date :1717665960245, IP: ::1, Method: POST, URL: /api/users
+Date :1717665962658, IP: ::1, Method: DELETE, URL: /api/users/11
