@@ -10,6 +10,7 @@
  * - GET /api/users: Responds with the list of all users.
  * - GET /api/users/:id: Responds with the details of a specific user by ID.
  * - POST /api/users: Creates a new user and adds it to the users.json file.
+ * - DELETE /api/users/:id: Deletes a user by ID.
  *
  * The application starts the server and listens for incoming requests on the specified port.
  */
@@ -118,11 +119,11 @@ app.get('/api/users/:id', async (req, res) => {
 
   if (error) {
     console.error('Error fetching user:', error);
-    return res.status(500).json({ error: 'Failed to fetch user' });
+    return res.status(500).json({ error: `Failed to fetch user with ID ${id}` });
   }
 
   if (!data) {
-    return res.status(404).json({ error: 'User not found' });
+    return res.status(404).json({ error: 'Failed to fetch user' });
   }
 
   res.json(data);
@@ -182,6 +183,43 @@ app.post("/api/users", async (req, res) => {
     status: "success",
     message: `User ${newUser.first_name} added successfully`,
   });
+});
+
+
+/**
+ * !Define route to delete a user by ID
+ */
+app.delete('/api/users/:id', async (req, res) => {
+  const id = Number(req.params.id);
+
+  // Check if the user exists
+  const { data: existingUser, error: fetchError } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (fetchError) {
+    console.error('Error fetching user:', fetchError);
+    return res.status(500).json({ error: 'User not found' });
+  }
+
+  if (!existingUser) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  // Delete the user from the Supabase table
+  const { error: deleteError } = await supabase
+    .from('users')
+    .delete()
+    .eq('id', id);
+
+  if (deleteError) {
+    console.error('Error deleting user:', deleteError);
+    return res.status(500).json({ error: 'Failed to delete user' });
+  }
+
+  res.json({ status: 'success', message: 'User deleted successfully' });
 });
 
 // Start the server and listen for incoming requests on the specified port
