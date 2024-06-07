@@ -2,7 +2,6 @@
 process.loadEnvFile();
 
 import { Router } from "express";
-import express from "express";
 import fs from "fs/promises"; // File system module for reading and writing files (with promises)
 import { validateUser } from "../validation.js"; // Import user validation function
 
@@ -15,14 +14,6 @@ const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const router = Router();
-
-// Create an instance of the Express.js application
-const app = express();
-
-/**
- * !Middleware to parse JSON request bodies
- */
-app.use(express.json());
 
 // Define route to handle root endpoint
 router.get("/", (req, res) => {
