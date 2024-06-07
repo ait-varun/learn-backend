@@ -19,7 +19,7 @@
 process.loadEnvFile();
 
 import express from "express";
-import usersRouter from "./routes/users.js";
+import userRoutes from "./routes/users.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -27,7 +27,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 // Mount the users router on /
-app.use("/", usersRouter);
+app.use("/", userRoutes);
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);

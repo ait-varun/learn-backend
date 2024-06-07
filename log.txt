@@ -181,3 +181,17 @@ Date :1717745193095, IP: ::1, Method: GET, URL: /api/users/11
 Date :1717745197052, IP: ::1, Method: POST, URL: /api/users
 Date :1717745220081, IP: ::1, Method: POST, URL: /api/users
 Date :1717745223878, IP: ::1, Method: DELETE, URL: /api/users/11
+Date :1717745358413, IP: ::1, Method: GET, URL: /api/users
+Date :1717751382082, IP: ::1, Method: GET, URL: /favicon.ico
+Date :1717752020352, IP: ::1, Method: GET, URL: /api/users
+Date :1717752022615, IP: ::1, Method: GET, URL: /api/users/3
+Date :1717752449638, IP: ::1, Method: GET, URL: /api/users/3
+Date :1717752472309, IP: ::1, Method: GET, URL: /api/users
+Date :1717752479142, IP: ::1, Method: POST, URL: /api/users
+Date :1717752488303, IP: ::1, Method: GET, URL: /api/users/11
+Date :1717752494333, IP: ::1, Method: DELETE, URL: /api/users/:id
+Date :1717752496248, IP: ::1, Method: DELETE, URL: /api/users/:id
+Date :1717752499165, IP: ::1, Method: DELETE, URL: /api/users/:id
+Date :1717752511030, IP: ::1, Method: DELETE, URL: /api/users/11
+Date :1717752529038, IP: ::1, Method: GET, URL: /api/users/1
+Date :1717752532210, IP: ::1, Method: GET, URL: /api/users
