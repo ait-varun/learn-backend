@@ -76,3 +76,9 @@ Date :1717744695178, IP: ::1, Method: GET, URL: /api/users
 Date :1717744695180, IP: ::1, Method: GET, URL: /api/users
 Date :1717744698102, IP: ::1, Method: GET, URL: /api/users/11
 Date :1717744698103, IP: ::1, Method: GET, URL: /api/users/11
+Date :1717744983189, IP: ::1, Method: GET, URL: /api/users
+Date :1717744986796, IP: ::1, Method: GET, URL: /api/users/1
+Date :1717744991639, IP: ::1, Method: GET, URL: /api/users/11
+Date :1717744995167, IP: ::1, Method: POST, URL: /api/users
+Date :1717744997169, IP: ::1, Method: GET, URL: /api/users/11
+Date :1717745003470, IP: ::1, Method: DELETE, URL: /api/users/11
