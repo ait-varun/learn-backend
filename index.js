@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 
-// Mount the users router on /api/users
+// Mount the users router on /
 app.use("/", usersRouter);
 
 app.listen(port, () => {
