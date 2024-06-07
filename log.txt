@@ -64,3 +64,15 @@ Date :1717743670531, IP: ::1, Method: DELETE, URL: /api/users/11
 Date :1717743670533, IP: ::1, Method: DELETE, URL: /api/users/11
 Date :1717743671424, IP: ::1, Method: DELETE, URL: /api/users/11
 Date :1717743671425, IP: ::1, Method: DELETE, URL: /api/users/11
+Date :1717744680241, IP: ::1, Method: GET, URL: /api/users/2
+Date :1717744680244, IP: ::1, Method: GET, URL: /api/users/2
+Date :1717744682761, IP: ::1, Method: GET, URL: /api/users
+Date :1717744682762, IP: ::1, Method: GET, URL: /api/users
+Date :1717744690269, IP: ::1, Method: POST, URL: /api/users
+Date :1717744690272, IP: ::1, Method: POST, URL: /api/users
+Date :1717744692851, IP: ::1, Method: DELETE, URL: /api/users/11
+Date :1717744692853, IP: ::1, Method: DELETE, URL: /api/users/11
+Date :1717744695178, IP: ::1, Method: GET, URL: /api/users
+Date :1717744695180, IP: ::1, Method: GET, URL: /api/users
+Date :1717744698102, IP: ::1, Method: GET, URL: /api/users/11
+Date :1717744698103, IP: ::1, Method: GET, URL: /api/users/11
