@@ -1,8 +1,42 @@
 import { Router } from "express";
 import fs from "fs/promises"; // File system module for reading and writing files (with promises)
 import { validateUser } from "../validation.js"; // Import user validation function
+import mysql from "mysql";
+
+/**
+ * ! Connect to the database
+ */
+
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "bodyandfragrance-app",
+});
+
+db.connect((err) => {
+  if (err) throw err;
+  console.log("Connected to database");
+});
+
+// db.query("SELECT * FROM countries", (err, rows) => {
+//   if (err) throw err;
+//   console.log(rows);
+// });
 
 const router = Router();
+
+/**
+ * ! Get all countries from the database
+ */
+
+router.get("/api/countries", (req, res) => {
+  db.query("SELECT * FROM countries", (err, rows) => {
+    if (err) throw err;
+    res.json(rows);
+  });
+});
+
 
 /**
  * !Read and parse user data from the users.json file

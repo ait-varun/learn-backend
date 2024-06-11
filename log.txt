@@ -96,3 +96,4 @@ Date :1718085391721, IP: ::1, Method: DELETE, URL: /api/users/13
 Date :1718085395737, IP: ::1, Method: DELETE, URL: /api/users/14
 Date :1718085400162, IP: ::1, Method: DELETE, URL: /api/users/15
 Date :1718085403650, IP: ::1, Method: DELETE, URL: /api/users/16
+Date :1718085884936, IP: ::1, Method: GET, URL: /api/users/11
