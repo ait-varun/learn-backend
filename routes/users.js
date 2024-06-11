@@ -37,6 +37,17 @@ router.get("/api/countries", (req, res) => {
   });
 });
 
+/**
+ * ! Get customers from the database
+ */
+
+router.get("/api/customers", (req, res) => {
+  db.query("SELECT * FROM customers", (err, rows) => {
+    if (err) throw err;
+    res.json(rows);
+  });
+});
+
 
 /**
  * !Read and parse user data from the users.json file
