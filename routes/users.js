@@ -1,53 +1,8 @@
 import { Router } from "express";
 import fs from "fs/promises"; // File system module for reading and writing files (with promises)
 import { validateUser } from "../validation.js"; // Import user validation function
-import mysql from "mysql";
-
-/**
- * ! Connect to the database
- */
-
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "bodyandfragrance-app",
-});
-
-db.connect((err) => {
-  if (err) throw err;
-  console.log("Connected to database");
-});
-
-// db.query("SELECT * FROM countries", (err, rows) => {
-//   if (err) throw err;
-//   console.log(rows);
-// });
 
 const router = Router();
-
-/**
- * ! Get all countries from the database
- */
-
-router.get("/api/countries", (req, res) => {
-  db.query("SELECT * FROM countries", (err, rows) => {
-    if (err) throw err;
-    res.json(rows);
-  });
-});
-
-/**
- * ! Get customers from the database
- */
-
-router.get("/api/customers", (req, res) => {
-  db.query("SELECT * FROM customers", (err, rows) => {
-    if (err) throw err;
-    res.json(rows);
-  });
-});
-
 
 /**
  * !Read and parse user data from the users.json file
@@ -60,42 +15,10 @@ try {
   console.error("Error reading users.json:", err);
 }
 
-// Define route to handle root endpoint
-router.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-/**
- * !Middleware to log requests to the console after each request
- */
-router.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-});
-
-/**
- * !Middleware to log request details to a log file
- */
-
-router.use(async (req, res, next) => {
-  try {
-    await fs.appendFile(
-      "log.txt",
-      `\nDate :${Date.now()}, IP: ${req.ip}, Method: ${req.method}, URL: ${
-        req.url
-      }`
-    );
-    next();
-  } catch (err) {
-    console.error("Error writing to log file:", err);
-    next(err);
-  }
-});
-
 /**
  * !Define route to get all users
  */
-router.get("/api/users", (req, res) => {
+router.get("/", (req, res) => {
   res.json(users);
 });
 
@@ -103,7 +26,7 @@ router.get("/api/users", (req, res) => {
  * !Define route to get a specific user by ID
  */
 
-router.get("/api/users/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const id = Number(req.params.id); // Convert the ID parameter to a number
   const user = users.find((user) => user.id === id); // Find the user with the specified ID
   if (!user) {
@@ -116,7 +39,7 @@ router.get("/api/users/:id", (req, res) => {
  * !Define route to create a new user
  */
 
-router.post("/api/users", async (req, res) => {
+router.post("/", async (req, res) => {
   const newUser = req.body; // Get the new user data from the request body
 
   // Validate user input
@@ -152,7 +75,7 @@ router.post("/api/users", async (req, res) => {
 /**
  * !Define route to delete a user by ID
  */
-router.delete("/api/users/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const id = Number(req.params.id); // Convert the ID parameter to a number
   const userIndex = users.findIndex((user) => user.id === id); // Find the index of the user with the specified ID
 
