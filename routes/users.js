@@ -95,10 +95,9 @@ router.post("/api/users", async (req, res) => {
 
   try {
     await fs.writeFile("./users.json", JSON.stringify(users));
-    res.json({
-      status: "success",
-      message: `User ${newUser.first_name} added successfully`,
-    });
+    res
+      .status(201)
+      .json({ message: `User ${newUser.first_name} added successfully` }); // 201 Created
   } catch (err) {
     console.error("Error writing to users.json:", err);
     res.status(500).json({ error: "Failed to save user" });
